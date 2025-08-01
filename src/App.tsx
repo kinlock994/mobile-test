@@ -6,7 +6,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { store } from '@store/index';
 import RootNavigator from '@navigation/RootNavigator';
-import { navigationRef } from '@navigation/navigationRef';
 
 export default function App() {
   return (
@@ -21,7 +20,6 @@ export default function App() {
               background: '#ffffff',
             },
           }}
-          ref={navigationRef}
         >
           <RootNavigator />
         </NavigationContainer>

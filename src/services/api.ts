@@ -22,6 +22,7 @@ api.interceptors.response.use(
   async (error: AxiosError) => {
     const original = error.config as any;
     console.log(store.getState().auth);
+    console.log(error.response?.status);
     
     if (
       error.response?.status === 401 &&

@@ -31,7 +31,7 @@ export const baseQuery: typeof rawBaseQuery = async (
 
     const refreshResult = await rawBaseQuery(
       {
-        url: '/refresh-token',
+        url: '/auth/refresh-token',
         method: 'POST',
         body: { refreshToken },
         headers: { Authorization: undefined },

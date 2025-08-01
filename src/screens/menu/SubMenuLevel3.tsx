@@ -1,24 +1,36 @@
+// /screens/SubMenuLevel3.tsx
 import React from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuStackParamList } from '@navigation/MenuStack';
 import { mainMenuData, findMenuItemById } from './menuData';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type Props = NativeStackScreenProps<MenuStackParamList, 'SubMenuLevel3'>;
 
-export default function SubMenuLevel3({ route }: Props) {
-  const { parentId } = route.params;
-  const parentItem = findMenuItemById(mainMenuData, parentId);
+export default function SubMenuLevel3({ navigation, route }: Props) {
+  const parent = findMenuItemById(mainMenuData, route.params.parentId);
+  const children = parent?.children ?? [];
 
-  if (!parentItem?.children) return <Text>No further submenu.</Text>;
+  const handlePress = (item: typeof parent) => {
+    if (item?.targetScreen) {
+      navigation.navigate(item.targetScreen as any, { fromMenuId: item.id });
+    } else if (item?.tabTarget) {
+      navigation.navigate(item.tabTarget.tab as any, {
+        screen: item.tabTarget.screen,
+        params: item.tabTarget.params,
+      });
+    }
+  };
 
   return (
     <View>
       <FlatList
-        data={parentItem.children}
-        keyExtractor={(item) => item.id}
+        data={children}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <Text style={{ fontSize: 18, padding: 10 }}>{item.title}</Text>
+          <TouchableOpacity onPress={() => handlePress(item)}>
+            <Text style={{ fontSize: 18, padding: 10 }}>{item.title}</Text>
+          </TouchableOpacity>
         )}
       />
     </View>

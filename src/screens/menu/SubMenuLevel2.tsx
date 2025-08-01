@@ -1,24 +1,39 @@
+// /screens/SubMenuLevel2.tsx
+
 import React from 'react';
 import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuStackParamList } from '@navigation/MenuStack';
 import { mainMenuData, findMenuItemById } from './menuData';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type Props = NativeStackScreenProps<MenuStackParamList, 'SubMenuLevel2'>;
 
-export default function SubMenuLevel2({ route, navigation }: Props) {
-  const { parentId } = route.params;
-  const parentItem = findMenuItemById(mainMenuData, parentId);
+export default function SubMenuLevel2({ navigation, route }: Props) {
+  const parent = findMenuItemById(mainMenuData, route.params.parentId);
+  const children = parent?.children ?? [];
 
-  if (!parentItem?.children) return <Text>No submenu found.</Text>;
+  const handlePress = (item: typeof parent) => {
+    if (item) {
+      if (item.children) {
+        navigation.navigate('SubMenuLevel3', { parentId: item.id });
+      } else if (item.targetScreen) {
+        navigation.navigate(item.targetScreen as any, { fromMenuId: item.id });
+      } else if (item.tabTarget) {
+        navigation.navigate(item.tabTarget.tab as any, {
+          screen: item.tabTarget.screen,
+          params: item.tabTarget.params,
+        });
+      }
+    }
+  };
 
   return (
     <View>
       <FlatList
-        data={parentItem.children}
-        keyExtractor={(item) => item.id}
+        data={children}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('SubMenuLevel3', { parentId: item.id })}>
+          <TouchableOpacity onPress={() => handlePress(item)}>
             <Text style={{ fontSize: 18, padding: 10 }}>{item.title}</Text>
           </TouchableOpacity>
         )}
