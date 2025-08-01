@@ -116,12 +116,7 @@ export default function ProductListScreen() {
         }
       />
 
-      <TouchableOpacity
-        style={styles.fab}
-        onPress={() => navigation.navigate('ProductCreate' as never)}
-      >
-        <Text style={styles.fabText}>＋</Text>
-      </TouchableOpacity>
+
     </View>
   );
 }

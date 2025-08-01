@@ -1,17 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// components/CustomTabBar.tsx
 import React, { useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
 import { colors } from '@theme';
-import { useAppDispatch } from '@hooks/useAppDispatch';
-import { toggleDrawer } from '@store/slices/uiSlice';
-import { useAppSelector } from '@hooks/useAppSelector';
-import { RootState } from '@store/index';
-
 const TAB_WIDTH = 64;
 const ORANGE = colors.primary;
 const WHITE = colors.white;
@@ -22,7 +14,7 @@ const getFallbackIcon = (routeName: string, color: string) => {
     Profile: 'happy-outline',
     About: 'information-circle-outline',
     Wallet: 'wallet',
-    MenuStack: 'compass'
+    MenuStack: 'compass',
     // add more screens if needed
   };
   return (
@@ -35,12 +27,8 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
-  const visible = useAppSelector(
-    (stateRedux: RootState) => stateRedux.ui.isDrawerOpen,
-  );
   const insets = useSafeAreaInsets();
   const scales = useRef(state.routes.map(() => new Animated.Value(1))).current;
-  const dispatch = useAppDispatch();
 
   const handlePress = (
     index: number,
@@ -60,9 +48,18 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
           useNativeDriver: true,
         }),
       ]).start();
+      console.log(routeName);
 
       navigation.navigate(routeName);
     }
+  };
+
+  const handleMenuPress = () => {
+    const currentTab = state.routeNames[state.index];
+    navigation.navigate('MenuStack', {
+      screen: 'MenuStack',
+      params: { fromTab: currentTab },
+    });
   };
 
   return (
@@ -75,19 +72,6 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
         },
       ]}
     >
-      {/* <TouchableOpacity
-        accessibilityRole="button"
-        activeOpacity={0.85}
-        style={styles.touchable}
-        onPress={() => dispatch(toggleDrawer())}
-      >
-        <Animated.View style={{ transform: [{ scale: scales[1] }] }}>
-          <View style={visible ? styles.activeCircle : null}>
-            <Entypo name="compass" color={visible ? WHITE : ORANGE} size={24} />
-          
-          </View>
-        </Animated.View>
-      </TouchableOpacity> */}
       {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
@@ -109,7 +93,11 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
             accessibilityState={isFocused ? { selected: true } : {}}
             activeOpacity={0.85}
             style={styles.touchable}
-            onPress={() => handlePress(index, route.name, isFocused)}
+            onPress={() =>
+              route.name === 'MenuStack'
+                ? handleMenuPress()
+                : handlePress(index, route.name, isFocused)
+            }
           >
             <Animated.View style={{ transform: [{ scale: scales[index] }] }}>
               <View style={isFocused ? styles.activeCircle : null}>
@@ -130,13 +118,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#ffffff',
     borderRadius: 40,
-   
-    shadowColor: '#000', // iOS shadow
+    shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
-    zIndex:20,
-     elevation: 20, // Android shadow
+    zIndex: 20,
+    elevation: 20,
   },
   touchable: {
     width: TAB_WIDTH,

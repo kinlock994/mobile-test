@@ -1,10 +1,9 @@
-// /screens/SubMenuLevel2.tsx
-
 import React from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuStackParamList } from '@navigation/MenuStack';
 import { mainMenuData, findMenuItemById } from './menuData';
+import MenuItem from '@components/MenuItem';
 
 type Props = NativeStackScreenProps<MenuStackParamList, 'SubMenuLevel2'>;
 
@@ -33,9 +32,12 @@ export default function SubMenuLevel2({ navigation, route }: Props) {
         data={children}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => handlePress(item)}>
-            <Text style={{ fontSize: 18, padding: 10 }}>{item.title}</Text>
-          </TouchableOpacity>
+          <MenuItem
+            title={item.title}
+            onPress={() => handlePress(item)}
+            hasDivider={true}
+            children={item.children}
+          />
         )}
       />
     </View>
