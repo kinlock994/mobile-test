@@ -15,12 +15,14 @@ import { closeDrawer } from '@store/slices/uiSlice';
 import AboutScreen from '@screens/about/AboutScreen';
 import CustomHeader from '@components/CustomHeader';
 import WalletScreen from '@screens/wallet/WalletScreen';
+import MenuStack from './MenuStack';
 
 export type AppTabsParamList = {
   Products: undefined;
   Profile: undefined;
   About: undefined;
   Wallet: undefined;
+  MenuStack: undefined;
 };
 
 const Tab = createBottomTabNavigator<AppTabsParamList>();
@@ -41,6 +43,7 @@ export default function AppTabs() {
         <Tab.Screen name="Profile" component={ProfileScreen} />
         <Tab.Screen name="About" component={AboutScreen} />
         <Tab.Screen name="Wallet" component={WalletScreen} />
+        <Tab.Screen name="MenuStack" component={MenuStack} />
       </Tab.Navigator>
       <MenuDrawer visible={visible} onClose={() => dispatch(closeDrawer())} />
     </>

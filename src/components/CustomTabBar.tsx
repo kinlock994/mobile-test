@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // components/CustomTabBar.tsx
 import React, { useRef } from 'react';
 import { View, TouchableOpacity, StyleSheet, Animated } from 'react-native';
@@ -20,7 +21,8 @@ const getFallbackIcon = (routeName: string, color: string) => {
     Products: 'storefront-outline',
     Profile: 'happy-outline',
     About: 'information-circle-outline',
-    Wallet: 'wallet'
+    Wallet: 'wallet',
+    MenuStack: 'compass'
     // add more screens if needed
   };
   return (
@@ -73,7 +75,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
         },
       ]}
     >
-      <TouchableOpacity
+      {/* <TouchableOpacity
         accessibilityRole="button"
         activeOpacity={0.85}
         style={styles.touchable}
@@ -85,7 +87,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
           
           </View>
         </Animated.View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
