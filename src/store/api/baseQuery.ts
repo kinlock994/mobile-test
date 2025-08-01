@@ -21,6 +21,9 @@ export const baseQuery: typeof rawBaseQuery = async (
   extraOptions,
 ) => {
   let result = await rawBaseQuery(args, api, extraOptions);
+console.log(result);
+console.log(result.error);
+
 
   if (result.error && (result.error as FetchBaseQueryError).status === 401) {
     const refreshToken = (api.getState() as RootState).auth.refreshToken;

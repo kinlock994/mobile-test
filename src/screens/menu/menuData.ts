@@ -3,6 +3,7 @@
 export interface MenuItem {
   id: string;
   title: string;
+  icon?:string;
   children?: MenuItem[];
   targetScreen?: string; // Final screen name
   tabTarget?: {
@@ -16,6 +17,7 @@ export const mainMenuData: MenuItem[] = [
   {
     id: 'menu-a',
     title: 'Menu A',
+    icon: require('../../assets/Cow.png'),
     children: [
       {
         id: 'menu-a-1',
@@ -36,6 +38,7 @@ export const mainMenuData: MenuItem[] = [
   {
     id: 'menu-b',
     title: 'Menu B',
+    icon: require('../../assets/Hamster.png'),
     children: [
       {
         id: 'menu-b-1',
@@ -53,6 +56,7 @@ export const mainMenuData: MenuItem[] = [
   {
     id: 'menu-c',
     title: 'Menu C',
+    icon: require('../../assets/Frog.png'),
     children: [
       {
         id: 'menu-c-1',

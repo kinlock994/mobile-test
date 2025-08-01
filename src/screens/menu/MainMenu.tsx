@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, FlatList, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuStackParamList } from '@navigation/MenuStack';
 import { mainMenuData } from './menuData';
+import MenuItem from '@components/MenuItem';
 
 type Props = NativeStackScreenProps<MenuStackParamList, 'MainMenu'>;
 
@@ -11,11 +12,17 @@ export default function MainMenu({ navigation }: Props) {
     <View>
       <FlatList
         data={mainMenuData}
-        keyExtractor={(item) => item.id}
+        keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('SubMenuLevel1', { parentId: item.id })}>
-            <Text style={{ fontSize: 18, padding: 10 }}>{item.title}</Text>
-          </TouchableOpacity>
+          <MenuItem
+            title={item.title}
+            icon={item.icon}
+            children={item.children}
+            onPress={() =>
+              navigation.navigate('SubMenuLevel1', { parentId: item.id })
+            }
+            hasDivider={true}
+          />
         )}
       />
     </View>
