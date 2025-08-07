@@ -29,7 +29,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
 }) => {
   const insets = useSafeAreaInsets();
   const scales = useRef(state.routes.map(() => new Animated.Value(1))).current;
-
+  const visibleTabs = ['Products', 'Profile', 'About', 'MenuStack'];
   const handlePress = (
     index: number,
     routeName: string,
@@ -73,6 +73,7 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
       ]}
     >
       {state.routes.map((route: any, index: any) => {
+        if (!visibleTabs.includes(route.name)) return null;
         const { options } = descriptors[route.key];
         const isFocused = state.index === index;
         const iconColor = isFocused ? WHITE : ORANGE;

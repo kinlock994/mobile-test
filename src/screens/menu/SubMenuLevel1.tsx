@@ -1,20 +1,24 @@
-import React from 'react';
+/* eslint-disable react/no-unstable-nested-components */
+import React, { useLayoutEffect } from 'react';
 import { View, FlatList } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MenuStackParamList } from '@navigation/MenuStack';
 import { mainMenuData, findMenuItemById } from './menuData';
 import MenuItem from '@components/MenuItem';
+import { TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = NativeStackScreenProps<MenuStackParamList, 'SubMenuLevel1'>;
 
 export default function SubMenuLevel1({ navigation, route }: Props) {
-  const parent = findMenuItemById(mainMenuData, route.params.parentId);
+  const { parentId, title } = route.params;
+  const parent = findMenuItemById(mainMenuData, parentId);
   const children = parent?.children ?? [];
 
   const handlePress = (item: typeof parent) => {
     if (item) {
       if (item.children) {
-        navigation.navigate('SubMenuLevel2', { parentId: item.id });
+        navigation.navigate('SubMenuLevel2', { parentId: item.id, title });
       } else if (item.targetScreen) {
         navigation.navigate(item.targetScreen as any, { fromMenuId: item.id });
       } else if (item.tabTarget) {
@@ -26,13 +30,35 @@ export default function SubMenuLevel1({ navigation, route }: Props) {
     }
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: title,
+      headerTitleAlign: 'center',
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons name="chevron-back-circle-outline" size={20} />
+        </TouchableOpacity>
+      ),
+      headerRight: () => (
+        <TouchableOpacity onPress={() => console.log('')}>
+          <Ionicons name="close" size={20} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, title]);
+
   return (
     <View>
       <FlatList
         data={children}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <MenuItem title={item.title} onPress={() => handlePress(item)} hasDivider={true} children={item.children} />
+          <MenuItem
+            title={item.title}
+            onPress={() => handlePress(item)}
+            hasDivider={true}
+            children={item.children}
+          />
         )}
       />
     </View>

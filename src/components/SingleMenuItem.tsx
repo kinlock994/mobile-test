@@ -1,41 +1,26 @@
 import { colors } from '@theme/index';
 import React from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import Feather from 'react-native-vector-icons/Feather';
 
 type Props = {
   title: string;
-  icon?: string;
-  children?: any;
-  isDirect?:boolean;
-  hasDivider?: boolean;
   onPress: () => void;
 };
 
-export default function MenuItem({
+export default function SingleMenuItem({
   title,
-  icon,
-  children,
-  isDirect,
-  hasDivider,
   onPress,
 }: Props) {
   return (
     <View>
       <TouchableOpacity onPress={onPress} style={styles.menuItem}>
         <View style={styles.itemLeft}>
-          {icon && (
-            <Image
-              source={{uri: icon}}
-              style={styles.avatar}
-            />
-          )}
-
           <Text style={styles.menuText}>{title}</Text>
         </View>
-        {(children || isDirect) && <Icon name="chevron-right" color="#999" size={20} />}
+        <Feather name="arrow-up-right" color="#000" size={24} />
       </TouchableOpacity>
-      {hasDivider && <View style={styles.divider} />}
+      
     </View>
   );
 }

@@ -3,6 +3,7 @@ import { authReducer } from './slices/authSlice';
 import { uiReducer } from './slices/uiSlice';
 import { authApi } from './api/authApi';
 import { productApi } from './api/productApi';
+import Reactotron from './reactotronConfig';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
       authApi.middleware,
       productApi.middleware,
     ),
+  enhancers: (getDefaultEnhancers) => getDefaultEnhancers().concat(Reactotron.createEnhancer?.()),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
